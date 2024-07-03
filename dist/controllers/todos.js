@@ -3,35 +3,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTodos = exports.updateTodos = exports.getTodos = exports.createTodo = void 0;
 const todos_1 = require("../models/todos");
 const TODOS = [];
-const createTodo = (req, res, next) => {
-    const text = req.body.text;
-    const newTodo = new todos_1.Todo(Math.random().toString(), text);
-    TODOS.push(newTodo);
-    res.status(201).json({ message: "create newTodo", createTodo: newTodo });
+const createTodo = async (req, res, next) => {
+    try {
+        const { name, favorite = false } = req.body;
+        const newTodo = new todos_1.Todo({
+            id: Math.random().toString(),
+            name,
+            favorite,
+        });
+        await newTodo.save();
+        res.status(201).json({ message: "Created new todo", createTodo: newTodo });
+    }
+    catch (error) {
+        next(error);
+    }
 };
 exports.createTodo = createTodo;
-const getTodos = (req, res, next) => {
-    res.status(200).json({ todos: TODOS });
+const getTodos = async (req, res, next) => {
+    try {
+        const todos = await todos_1.Todo.find();
+        res.status(200).json({ todos });
+    }
+    catch (error) {
+        next(error);
+    }
 };
 exports.getTodos = getTodos;
-const updateTodos = (req, res, next) => {
-    const todoId = req.params.id;
-    const updatedText = req.body.text;
-    const todoIndex = TODOS.findIndex((todo) => todo.id === todoId);
-    if (todoIndex < 0) {
-        throw new Error("Could not find Todo");
+const updateTodos = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { name, favorite } = req.body;
+        const todo = await todos_1.Todo.findById(id);
+        if (!todo) {
+            return res.status(404).json({ message: "Could not find todo" });
+        }
+        todo.name = name;
+        todo.favorite = favorite !== null && favorite !== void 0 ? favorite : todo.favorite;
+        await todo.save();
+        res.status(200).json({ message: "Updated todo", updateTodo: todo });
     }
-    TODOS[todoIndex] = new todos_1.Todo(TODOS[todoIndex].id, updatedText);
-    res.status(201).json({ message: "update", updateTodo: TODOS[todoIndex] });
+    catch (error) {
+        next(error);
+    }
 };
 exports.updateTodos = updateTodos;
-const deleteTodos = (req, res, next) => {
-    const todoId = req.params.id;
-    const todoIndex = TODOS.findIndex((todo) => todo.id === todoId);
-    if (todoIndex < 0) {
-        throw new Error("Could not find Todo");
+const deleteTodos = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const todo = await todos_1.Todo.findByIdAndDelete(id);
+        if (!todo) {
+            return res.status(404).json({ message: "Could not find todo" });
+        }
+        res.status(200).json({ message: "Deleted todo" });
     }
-    TODOS.splice(todoIndex, 1);
-    res.json({ message: "Todo deleted" });
+    catch (error) {
+        next(error);
+    }
 };
 exports.deleteTodos = deleteTodos;

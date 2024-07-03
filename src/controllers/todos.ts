@@ -1,36 +1,74 @@
 import { RequestHandler } from "express";
-import { Todo } from "../models/todos";
-const TODOS: Todo[] = [];
+import { Todo, ITodo } from "../models/todos";
 
-export const createTodo: RequestHandler = (req, res, next) => {
-  const text = (req.body as { text: string }).text;
-  const newTodo = new Todo(Math.random().toString(), text);
-  TODOS.push(newTodo);
+const TODOS: ITodo[] = [];
 
-  res.status(201).json({ message: "create newTodo", createTodo: newTodo });
-};
+interface ITodoBody {
+  name: string;
+  favorite?: boolean;
+}
 
-export const getTodos: RequestHandler = (req, res, next) => {
-  res.status(200).json({ todos: TODOS });
-};
+export const createTodo: RequestHandler = async (req, res, next) => {
+  try {
+    const { name, favorite = false } = req.body as ITodoBody;
 
-export const updateTodos: RequestHandler<{ id: string }> = (req, res, next) => {
-  const todoId = req.params.id;
-  const updatedText = (req.body as { text: string }).text;
-  const todoIndex = TODOS.findIndex((todo) => todo.id === todoId);
-  if (todoIndex < 0) {
-    throw new Error("Could not find Todo");
+    const newTodo = new Todo({
+      id: Math.random().toString(),
+      name,
+      favorite,
+    });
+
+    await newTodo.save();
+
+    res.status(201).json({ message: "Created new todo", createTodo: newTodo });
+  } catch (error) {
+    next(error);
   }
-  TODOS[todoIndex] = new Todo(TODOS[todoIndex].id, updatedText);
-  res.status(201).json({ message: "update", updateTodo: TODOS[todoIndex] });
 };
 
-export const deleteTodos: RequestHandler = (req, res, next) => {
-  const todoId = req.params.id;
-  const todoIndex = TODOS.findIndex((todo) => todo.id === todoId);
-  if (todoIndex < 0) {
-    throw new Error("Could not find Todo");
+export const getTodos: RequestHandler = async (req, res, next) => {
+  try {
+    const todos = await Todo.find();
+    res.status(200).json({ todos });
+  } catch (error) {
+    next(error);
   }
-  TODOS.splice(todoIndex, 1);
-  res.json({ message: "Todo deleted" });
+};
+
+export const updateTodos: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, favorite } = req.body as ITodoBody;
+
+    const todo = await Todo.findById(id);
+
+    if (!todo) {
+      return res.status(404).json({ message: "Could not find todo" });
+    }
+
+    todo.name = name;
+    todo.favorite = favorite ?? todo.favorite;
+
+    await todo.save();
+
+    res.status(200).json({ message: "Updated todo", updateTodo: todo });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteTodos: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const todo = await Todo.findByIdAndDelete(id);
+
+    if (!todo) {
+      return res.status(404).json({ message: "Could not find todo" });
+    }
+
+    res.status(200).json({ message: "Deleted todo" });
+  } catch (error) {
+    next(error);
+  }
 };

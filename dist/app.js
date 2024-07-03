@@ -1,5 +1,4 @@
 "use strict";
-// const express = require("express");
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -14,5 +13,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: err.message });
 });
 app.listen(3000, () => {
-    console.log("Server running");
+    console.log("Server running!");
 });
+exports.default = app;
