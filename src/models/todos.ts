@@ -7,17 +7,17 @@ import { handleMongooseError } from "../helpers/handleMongooseError";
 const Joi = require("joi");
 
 export interface ITodo extends Document {
-  id: string;
+  // id: string;
   name: string;
   favorite?: boolean;
 }
 
 const todoSchema = new Schema<ITodo>(
   {
-    id: {
-      type: String,
-      required: [true, "Set name for todo"],
-    },
+    // id: {
+    //   type: String,
+    //   required: [true, "Set id for todo"],
+    // },
     name: {
       type: String,
       required: [true, "Set name for todo"],
@@ -44,7 +44,7 @@ todoSchema.post(
 );
 
 const addSchema = Joi.object({
-  id: Joi.string().max(30).required(),
+  // id: Joi.string().max(30).required(),
   name: Joi.string().max(30).required(),
   // favorite: Joi.boolean(),
 });
