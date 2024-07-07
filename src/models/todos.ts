@@ -1,8 +1,4 @@
-// export class Todo {
-//   constructor(public id: string, public text: string) {}
-// }
-
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 import { handleMongooseError } from "../helpers/handleMongooseError";
 const Joi = require("joi");
 
@@ -10,6 +6,7 @@ export interface ITodo extends Document {
   // id: string;
   name: string;
   favorite?: boolean;
+  owner: Types.ObjectId;
 }
 
 const todoSchema = new Schema<ITodo>(
@@ -26,10 +23,11 @@ const todoSchema = new Schema<ITodo>(
       type: Boolean,
       default: false,
     },
-    // owner: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "user",
-    // },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );

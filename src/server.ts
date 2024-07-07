@@ -11,13 +11,9 @@ mongoose.set("strictQuery", true);
 const connectDatabase = async () => {
   try {
     await mongoose.connect(DB_HOST!);
-    console.log("Database connection successful!");
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Database connection error:", error.message);
-    } else {
-      console.error("Unexpected error:", error);
-    }
+    console.log("Database connection successful");
+  } catch (error: any) {
+    console.error("Database connection error:", error.message);
     process.exit(1);
   }
 };
