@@ -28,32 +28,32 @@ router.get(
     ctrl.resendVerifyEmail(req, res, next)
 );
 
-// router.post(
-//   "/login",
-//   validateBody(schemas.loginSchema),
-//   (req: Request, res: Response, next: NextFunction) =>
-//     ctrl.login(req, res, next)
-// );
+router.post(
+  "/login",
+  validateBody(schemas.loginSchema),
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.login(req, res, next)
+);
 
-// router.post(
-//   "/refresh",
-//   validateBody(schemas.refreshSchema),
-//   (req: Request, res: Response, next: NextFunction) =>
-//     ctrl.refreshUser(req, res, next)
-// );
+router.post(
+  "/refresh",
+  validateBody(schemas.refreshSchema),
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.refresh(req, res, next)
+);
 
-// router.get(
-//   "/current",
-//   authenticate,
-//   (req: Request, res: Response, next: NextFunction) =>
-//     ctrl.getCurrent(req, res, next)
-// );
+router.get(
+  "/current",
+  authenticate,
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.getCurrent(req, res, next)
+);
 
-// router.post(
-//   "/logout",
-//   authenticate,
-//   (req: Request, res: Response, next: NextFunction) =>
-//     ctrl.logout(req, res, next)
-// );
+router.post(
+  "/logout",
+  authenticate,
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.logout(req, res, next)
+);
 
 export default router;

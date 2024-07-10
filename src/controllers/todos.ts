@@ -1,33 +1,53 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
-import { Todo, ITodo } from "../models/todos";
-import ctrlWrapper from "../helpers/ctrlWrapper"; // Adjust the import path as necessary
+import { Todo, ITodo, schemas } from "../models/todos";
+import ctrlWrapper from "../helpers/ctrlWrapper";
 import HttpError from "../helpers/HttpError";
-
+import mongoose, { Types } from "mongoose";
+import { IUser } from "../models/user";
 const TODOS: ITodo[] = [];
 
 interface ITodoBody {
   name: string;
   favorite?: boolean;
+  owner: string;
 }
+
+const validateTodo = (body: any) => {
+  const { error } = schemas.addSchema.validate(body);
+  if (error) {
+    throw HttpError(400, error.details[0].message);
+  }
+};
 
 const createTodo = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { name, favorite = false } = req.body as ITodoBody;
+  try {
+    const { name, favorite, owner } = req.body as ITodoBody;
+    const user = req.user as IUser;
+    const ownerId = user._id;
 
-  const newTodo = new Todo({
-    // id: Math.random().toString(),
-    name,
-    favorite,
-  });
+    validateTodo(req.body);
 
-  const savedTodo = await newTodo.save();
-  if (!savedTodo) {
-    throw HttpError(500, "Failed to create new todo");
+    const newTodo = new Todo({
+      name,
+      favorite,
+      owner: ownerId,
+    });
+
+    const savedTodo = await newTodo.save();
+    if (!savedTodo) {
+      throw HttpError(500, "Failed to create new todo");
+    }
+
+    res
+      .status(201)
+      .json({ message: "Created new todo", createdTodo: savedTodo });
+  } catch (error: any) {
+    next(HttpError(500, `Failed to create new todo: ${error.message}`));
   }
-  res.status(201).json({ message: "Created new todo", createTodo: savedTodo });
 };
 
 const getTodos = async (
@@ -35,11 +55,26 @@ const getTodos = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const todos = await Todo.find();
-  if (!todos) {
-    throw HttpError(404, "Not found");
+  try {
+    const user = req.user as IUser;
+    const ownerId = user._id;
+    console.log(user);
+
+    const todos = await Todo.find({ owner: ownerId }).exec();
+    if (!todos || todos.length === 0) {
+      throw HttpError(404, "No todos found for this user");
+    }
+
+    // Convert owner field to string for consistent representation
+    const todosWithStrings = todos.map((todo) => ({
+      ...todo.toObject(),
+      owner: todo.owner.toString(),
+    }));
+
+    res.status(200).json({ todos: todosWithStrings });
+  } catch (error: any) {
+    next(HttpError(500, `Failed to get todos: ${error.message}`));
   }
-  res.status(200).json({ todos });
 };
 
 const updateTodos = async (

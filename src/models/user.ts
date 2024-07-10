@@ -1,13 +1,14 @@
-import mongoose, { Schema, Document, Model, model } from "mongoose";
+import mongoose, { Schema, Document, Model, model, Types } from "mongoose";
 import { handleMongooseError } from "../helpers/handleMongooseError";
 import Joi from "joi";
 
-interface IToken extends Document {
+export interface IToken extends Document {
   email: string;
   tokenRefresh: string;
 }
 
 interface IUser extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   subscription: "starter" | "pro" | "business";
@@ -147,3 +148,6 @@ const schemas = {
 };
 
 export { Token, User, IUser, Session, ISession, EmailData, schemas };
+export interface AuthenticatedRequest extends Request {
+  user?: IUser;
+}
