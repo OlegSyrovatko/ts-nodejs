@@ -49,6 +49,27 @@ router.get(
     ctrl.getCurrent(req, res, next)
 );
 
+router.patch(
+  "/subscription",
+  authenticate,
+  validateBody(schemas.updateSubscription),
+  ctrl.updateSubscription
+);
+
+router.patch(
+  "/add-movie",
+  authenticate,
+  validateBody(schemas.movieIdSchema),
+  ctrl.addMovie
+);
+
+router.patch(
+  "/remove-movie",
+  authenticate,
+  validateBody(schemas.movieIdSchema),
+  ctrl.removeMovie
+);
+
 router.post(
   "/logout",
   authenticate,

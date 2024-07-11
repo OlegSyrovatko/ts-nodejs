@@ -17,6 +17,7 @@ interface IUser extends Document {
   avatarURL: string;
   verify: boolean;
   verificationToken: string;
+  movieIds: string[];
 }
 
 interface ISession extends Document {
@@ -89,6 +90,10 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, "Verify token is required"],
     },
+    movieIds: {
+      type: [String],
+      default: [],
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -139,12 +144,17 @@ const refreshSchema = Joi.object({
   tokenRefresh: Joi.string().required(),
 });
 
+const movieIdSchema = Joi.object({
+  movieId: Joi.string().required(),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
   updateSubscription,
   emailSchema,
   refreshSchema,
+  movieIdSchema,
 };
 
 export { Token, User, IUser, Session, ISession, EmailData, schemas };
