@@ -5,6 +5,7 @@ import { json } from "body-parser";
 import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 
 dotenv.config();
 
@@ -16,7 +17,15 @@ if (!SESSION_SECRET_WORD || !SESSION_KEY || !DB_HOST) {
 const app = express();
 
 app.use(json());
+
 app.use(express.static("public"));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use(
   session({
