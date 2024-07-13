@@ -1,10 +1,23 @@
-import multer, { StorageEngine } from "multer";
+import multer from "multer";
 import path from "path";
+import fs from "fs/promises";
 
-const tempDir = path.join(__dirname, "../", "temp");
+const tempDir = path.join(__dirname, "../temp");
 
-const multerConfig: StorageEngine = multer.diskStorage({
-  destination: (req, file, cb) => {
+const ensureDirExists = async (dir: string) => {
+  try {
+    await fs.mkdir(dir, { recursive: true });
+  } catch (err) {
+    console.error(`Error creating directory ${dir}:`, err);
+  }
+};
+
+// Ensure the temp directory exists at startup
+ensureDirExists(tempDir);
+
+const multerConfig = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    await ensureDirExists(tempDir); // Ensure the temp directory exists before saving the file
     cb(null, tempDir);
   },
   filename: (req, file, cb) => {
