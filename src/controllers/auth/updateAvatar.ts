@@ -19,7 +19,7 @@ export const updateAvatar = ctrlWrapper(
 
     const image = await Jimp.read(resultUpload);
 
-    // Resize the image so that the width is a minimum of 200 pixels, and height is adjusted proportionally
+    // Resize the images so that the width is a minimum of 200 pixels, and height is adjusted proportionally
     const width = 200;
     image.resize(width, Jimp.AUTO).write(resultUpload);
 
