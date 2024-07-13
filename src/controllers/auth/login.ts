@@ -73,6 +73,8 @@ export const login = ctrlWrapper(
       user: {
         name: user.name,
         subscription: "starter",
+        avatarURL: user.avatarURL,
+        movieIds: user.movieIds,
       },
     });
   }
