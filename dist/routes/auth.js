@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const ctrl = __importStar(require("../controllers/auth"));
 const validateBody_1 = require("../middlewares/validateBody");
 const authenticate_1 = require("../middlewares/authenticate");
+const upload_1 = require("../middlewares/upload");
 const user_1 = require("../models/user");
 const router = express_1.default.Router();
 router.post("/register", (0, validateBody_1.validateBody)(user_1.schemas.registerSchema), (req, res, next) => ctrl.register(req, res, next));
@@ -39,6 +40,7 @@ router.post("/login", (0, validateBody_1.validateBody)(user_1.schemas.loginSchem
 router.post("/refresh", (0, validateBody_1.validateBody)(user_1.schemas.refreshSchema), (req, res, next) => ctrl.refresh(req, res, next));
 router.get("/current", authenticate_1.authenticate, (req, res, next) => ctrl.getCurrent(req, res, next));
 router.patch("/subscription", authenticate_1.authenticate, (0, validateBody_1.validateBody)(user_1.schemas.updateSubscription), ctrl.updateSubscription);
+router.patch("/avatar", authenticate_1.authenticate, upload_1.upload.single("avatar"), ctrl.updateAvatar);
 router.patch("/add-movie", authenticate_1.authenticate, (0, validateBody_1.validateBody)(user_1.schemas.movieIdSchema), ctrl.addMovie);
 router.patch("/remove-movie", authenticate_1.authenticate, (0, validateBody_1.validateBody)(user_1.schemas.movieIdSchema), ctrl.removeMovie);
 router.post("/logout", authenticate_1.authenticate, (req, res, next) => ctrl.logout(req, res, next));

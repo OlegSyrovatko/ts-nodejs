@@ -7,7 +7,7 @@ exports.removeMovie = exports.addMovie = void 0;
 const user_1 = require("../../models/user");
 const HttpError_1 = __importDefault(require("../../helpers/HttpError"));
 const ctrlWrapper_1 = __importDefault(require("../../helpers/ctrlWrapper"));
-const addMovie = async (req, res, next) => {
+exports.addMovie = (0, ctrlWrapper_1.default)(async (req, res, next) => {
     const { movieId } = req.body;
     const { _id } = req.user;
     try {
@@ -21,9 +21,8 @@ const addMovie = async (req, res, next) => {
     catch (error) {
         next((0, HttpError_1.default)(500, `Failed to add movie: ${error.message}`));
     }
-};
-exports.addMovie = addMovie;
-const removeMovie = async (req, res, next) => {
+});
+exports.removeMovie = (0, ctrlWrapper_1.default)(async (req, res, next) => {
     const { movieId } = req.body;
     const { _id } = req.user;
     try {
@@ -37,9 +36,4 @@ const removeMovie = async (req, res, next) => {
     catch (error) {
         next((0, HttpError_1.default)(500, `Failed to remove movie: ${error.message}`));
     }
-};
-exports.removeMovie = removeMovie;
-exports.default = {
-    addMovie: (0, ctrlWrapper_1.default)(exports.addMovie),
-    removeMovie: (0, ctrlWrapper_1.default)(exports.removeMovie),
-};
+});

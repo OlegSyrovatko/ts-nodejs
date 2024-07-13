@@ -5,6 +5,7 @@ import * as ctrl from "../controllers/auth";
 
 import { validateBody } from "../middlewares/validateBody";
 import { authenticate } from "../middlewares/authenticate";
+import { upload } from "../middlewares/upload";
 import { schemas } from "../models/user";
 const router = express.Router();
 
@@ -55,6 +56,15 @@ router.patch(
   validateBody(schemas.updateSubscription),
   ctrl.updateSubscription
 );
+
+router.patch(
+  "/avatar",
+  authenticate,
+  upload.single("avatar"),
+  ctrl.updateAvatar
+);
+
+router.delete("/avatar", authenticate, ctrl.deleteAvatar);
 
 router.patch(
   "/add-movie",

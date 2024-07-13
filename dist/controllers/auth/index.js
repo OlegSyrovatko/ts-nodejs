@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeMovie = exports.addMovie = exports.updateSubscription = exports.logout = exports.getCurrent = exports.refresh = exports.login = exports.resendVerifyEmail = exports.verifyEmail = exports.register = void 0;
+exports.removeMovie = exports.updateAvatar = exports.addMovie = exports.updateSubscription = exports.logout = exports.getCurrent = exports.refresh = exports.login = exports.resendVerifyEmail = exports.verifyEmail = exports.register = void 0;
 const register_1 = require("./register");
 Object.defineProperty(exports, "register", { enumerable: true, get: function () { return register_1.register; } });
 const verifyEmail_1 = require("./verifyEmail");
@@ -17,6 +17,8 @@ const logout_1 = require("./logout");
 Object.defineProperty(exports, "logout", { enumerable: true, get: function () { return logout_1.logout; } });
 const updateSubscription_1 = require("./updateSubscription");
 Object.defineProperty(exports, "updateSubscription", { enumerable: true, get: function () { return updateSubscription_1.updateSubscription; } });
+const updateAvatar_1 = require("./updateAvatar");
+Object.defineProperty(exports, "updateAvatar", { enumerable: true, get: function () { return updateAvatar_1.updateAvatar; } });
 const movies_1 = require("./movies");
 Object.defineProperty(exports, "addMovie", { enumerable: true, get: function () { return movies_1.addMovie; } });
 Object.defineProperty(exports, "removeMovie", { enumerable: true, get: function () { return movies_1.removeMovie; } });
