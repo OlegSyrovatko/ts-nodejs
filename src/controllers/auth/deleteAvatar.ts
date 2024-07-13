@@ -4,7 +4,7 @@ import fs from "fs/promises";
 import { User } from "../../models/user";
 import ctrlWrapper from "../../helpers/ctrlWrapper";
 
-const avatarsDir = path.join(__dirname, "../../public", "avatars");
+const avatarsDir = path.join(__dirname, "../../../public", "avatars");
 
 export const deleteAvatar = ctrlWrapper(
   async (req: Request, res: Response): Promise<void> => {

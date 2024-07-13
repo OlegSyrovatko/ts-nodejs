@@ -18,8 +18,7 @@ if (!SESSION_SECRET_WORD || !SESSION_KEY || !DB_HOST) {
 const app = express();
 
 app.use(json());
-
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(
   cors({
     origin: "http://localhost:3000",

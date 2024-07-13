@@ -5,7 +5,7 @@ import Jimp from "jimp";
 import { User } from "../../models/user";
 import ctrlWrapper from "../../helpers/ctrlWrapper";
 
-const avatarsDir = path.join(__dirname, "../../public/avatars");
+const avatarsDir = path.join(__dirname, "../../../public/avatars");
 
 const ensureDirExists = async (dir: string) => {
   try {
@@ -33,7 +33,7 @@ export const updateAvatar = ctrlWrapper(
     const width = 200;
     image.resize(width, Jimp.AUTO).write(resultUpload);
 
-    const avatarURL = `/public/avatars/${fileName}`;
+    const avatarURL = `avatars/${fileName}`;
     await User.findByIdAndUpdate(_id, { avatarURL });
 
     res.status(200).json({ avatarURL });
