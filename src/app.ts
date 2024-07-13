@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+import path from "path";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ const app = express();
 
 app.use(json());
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(
   cors({
     origin: "http://localhost:3000",
