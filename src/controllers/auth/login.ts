@@ -72,7 +72,7 @@ export const login = ctrlWrapper(
       tokenRefresh,
       user: {
         name: user.name,
-        subscription: "starter",
+        subscription: user.subscription,
         avatarURL: user.avatarURL,
         movieIds: user.movieIds,
       },
