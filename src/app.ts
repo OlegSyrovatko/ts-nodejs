@@ -19,9 +19,13 @@ const app = express();
 
 app.use(json());
 app.use(express.static(path.join(__dirname, "../public")));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://olegsyrovatko.github.io",
+];
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
