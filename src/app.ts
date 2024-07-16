@@ -21,6 +21,7 @@ app.use(json());
 app.use(express.static(path.join(__dirname, "../public")));
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:3001",
   "https://olegsyrovatko.github.io",
 ];
 app.use(

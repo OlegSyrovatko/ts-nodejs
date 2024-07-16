@@ -11,6 +11,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const { SESSION_SECRET_WORD, SESSION_KEY, DB_HOST } = process.env;
 if (!SESSION_SECRET_WORD || !SESSION_KEY || !DB_HOST) {
@@ -18,9 +19,13 @@ if (!SESSION_SECRET_WORD || !SESSION_KEY || !DB_HOST) {
 }
 const app = (0, express_1.default)();
 app.use((0, body_parser_1.json)());
-app.use(express_1.default.static("public"));
+app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://olegsyrovatko.github.io",
+];
 app.use((0, cors_1.default)({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
 }));

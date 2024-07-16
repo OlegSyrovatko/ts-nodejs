@@ -6,9 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.upload = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
-const tempDir = path_1.default.join(__dirname, "../", "temp");
+const promises_1 = __importDefault(require("fs/promises"));
+const tempDir = path_1.default.join(__dirname, "../temp");
+const ensureDirExists = async (dir) => {
+    try {
+        await promises_1.default.mkdir(dir, { recursive: true });
+    }
+    catch (err) {
+        console.error(`Error creating directory ${dir}:`, err);
+    }
+};
+// Ensure the temp directory exists at startup
+ensureDirExists(tempDir);
 const multerConfig = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
+    destination: async (req, file, cb) => {
+        await ensureDirExists(tempDir); // Ensure the temp directory exists before saving the file
         cb(null, tempDir);
     },
     filename: (req, file, cb) => {

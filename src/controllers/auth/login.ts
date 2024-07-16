@@ -54,16 +54,18 @@ export const login = ctrlWrapper(
       sid: newSession._id.toString(),
     };
 
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23m" }); // 23h
     const tokenRefresh = jwt.sign(payload, REFRESH_SECRET_KEY, {
-      expiresIn: "23d",
+      expiresIn: "23d", // 23d
     });
 
     await User.findByIdAndUpdate(user._id, { token });
-    await Token.create({
+
+    const newToken = new Token({
       email: user.email,
       tokenRefresh,
     });
+    await newToken.save();
 
     res.json({
       code: 200,

@@ -41,6 +41,7 @@ router.post("/refresh", (0, validateBody_1.validateBody)(user_1.schemas.refreshS
 router.get("/current", authenticate_1.authenticate, (req, res, next) => ctrl.getCurrent(req, res, next));
 router.patch("/subscription", authenticate_1.authenticate, (0, validateBody_1.validateBody)(user_1.schemas.updateSubscription), ctrl.updateSubscription);
 router.patch("/avatar", authenticate_1.authenticate, upload_1.upload.single("avatar"), ctrl.updateAvatar);
+router.delete("/avatar", authenticate_1.authenticate, ctrl.deleteAvatar);
 router.patch("/add-movie", authenticate_1.authenticate, (0, validateBody_1.validateBody)(user_1.schemas.movieIdSchema), ctrl.addMovie);
 router.patch("/remove-movie", authenticate_1.authenticate, (0, validateBody_1.validateBody)(user_1.schemas.movieIdSchema), ctrl.removeMovie);
 router.post("/logout", authenticate_1.authenticate, (req, res, next) => ctrl.logout(req, res, next));

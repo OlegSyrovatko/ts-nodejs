@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import ctrlWrapper from "../../helpers/ctrlWrapper";
-import { IUser, User } from "../../models/user";
+import { IUser, User, Token } from "../../models/user";
 import HttpError from "../../helpers/HttpError";
-import { Token } from "../../models/user";
 
 export const getCurrent = ctrlWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -25,12 +24,14 @@ export const getCurrent = ctrlWrapper(
     }
 
     res.json({
-      email: user.email,
-      subscription: user.subscription,
-      name: user.name,
-      avatarURL: user.avatarURL,
-      movieIds: user.movieIds,
+      token: user.token,
       tokenRefresh: tokenDoc.tokenRefresh,
+      user: {
+        name: user.name,
+        subscription: user.subscription,
+        avatarURL: user.avatarURL,
+        movieIds: user.movieIds,
+      },
     });
   }
 );
