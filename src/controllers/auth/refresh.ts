@@ -61,7 +61,7 @@ export const refresh = ctrlWrapper(
         sid: newSession._id.toString(),
       };
 
-      const newToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "5s" }); /// 23h
+      const newToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
       const newTokenRefresh = jwt.sign(payload, REFRESH_SECRET_KEY, {
         expiresIn: "23d",
       });
