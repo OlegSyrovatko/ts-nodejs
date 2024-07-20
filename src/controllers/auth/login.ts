@@ -54,7 +54,7 @@ export const login = ctrlWrapper(
       sid: newSession._id.toString(),
     };
 
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23m" }); // 23h
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5s" }); /// 23h
     const tokenRefresh = jwt.sign(payload, REFRESH_SECRET_KEY, {
       expiresIn: "23d", // 23d
     });
@@ -74,6 +74,7 @@ export const login = ctrlWrapper(
       tokenRefresh,
       user: {
         name: user.name,
+        email: user.email,
         subscription: user.subscription,
         avatarURL: user.avatarURL,
         movieIds: user.movieIds,

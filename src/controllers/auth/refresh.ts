@@ -4,17 +4,17 @@ import { User, Token, Session, IUser } from "../../models/user";
 import HttpError from "../../helpers/HttpError";
 import ctrlWrapper from "../../helpers/ctrlWrapper";
 
-interface JwtPayload {
-  id: string;
-  sid: string;
-}
-
 const { SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
 
 if (!SECRET_KEY || !REFRESH_SECRET_KEY) {
   throw new Error(
     "SECRET_KEY or REFRESH_SECRET_KEY is not defined in environment variables"
   );
+}
+
+interface JwtPayload {
+  id: string;
+  sid: string;
 }
 
 export const refresh = ctrlWrapper(
@@ -25,13 +25,13 @@ export const refresh = ctrlWrapper(
     };
 
     if (!email || !tokenRefresh) {
-      throw HttpError(400, "Error. Provide all required fields");
+      return next(HttpError(400, "Error. Provide all required fields"));
     }
 
     const userRefresh = await Token.findOne({ email });
 
     if (!userRefresh) {
-      throw HttpError(401, "User email invalid or unauthorized");
+      return next(HttpError(401, "User email invalid or unauthorized"));
     }
 
     try {
@@ -43,13 +43,13 @@ export const refresh = ctrlWrapper(
       if (tokenRefresh !== userRefresh.tokenRefresh || !validateTokenResult) {
         await User.findOneAndUpdate({ email }, { token: "" });
         await Token.findOneAndDelete({ email });
-        throw HttpError(403, "Refresh token invalid or unauthorized");
+        return next(HttpError(403, "Refresh token invalid or unauthorized"));
       }
 
       const user = (await User.findOne({ email })) as IUser & { _id: string };
 
       if (!user) {
-        throw HttpError(401, "User email invalid or unauthorized");
+        return next(HttpError(401, "User email invalid or unauthorized"));
       }
 
       const newSession = await Session.create({
@@ -61,7 +61,7 @@ export const refresh = ctrlWrapper(
         sid: newSession._id.toString(),
       };
 
-      const newToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "11h" });
+      const newToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "5s" }); /// 23h
       const newTokenRefresh = jwt.sign(payload, REFRESH_SECRET_KEY, {
         expiresIn: "23d",
       });
