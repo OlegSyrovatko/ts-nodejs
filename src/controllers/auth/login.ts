@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { User, Token, Session, IUser } from "../../models/user";
+import { User, Token, Session, IUser, JwtPayload } from "../../models/user";
 import HttpError from "../../helpers/HttpError";
 import ctrlWrapper from "../../helpers/ctrlWrapper";
 import dotenv from "dotenv";
@@ -14,11 +14,6 @@ if (!SECRET_KEY || !REFRESH_SECRET_KEY) {
   throw new Error(
     "SECRET_KEY or REFRESH_SECRET_KEY is not defined in environment variables"
   );
-}
-
-interface JwtPayload {
-  id: string;
-  sid: string;
 }
 
 export const login = ctrlWrapper(

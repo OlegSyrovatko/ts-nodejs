@@ -7,6 +7,11 @@ export interface IToken extends Document {
   tokenRefresh: string;
 }
 
+export interface JwtPayload {
+  id: string;
+  sid: string;
+}
+
 interface IUser extends Document {
   _id: Types.ObjectId;
   name: string;
@@ -18,6 +23,8 @@ interface IUser extends Document {
   verify: boolean;
   verificationToken: string;
   movieIds: string[];
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 interface ISession extends Document {
@@ -88,11 +95,17 @@ const userSchema = new Schema<IUser>(
     },
     verificationToken: {
       type: String,
-      required: [true, "Verify token is required"],
+      // required: [true, "Verify token is required"],
     },
     movieIds: {
       type: [String],
       default: [],
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
     },
   },
   { versionKey: false, timestamps: true }
@@ -148,6 +161,14 @@ const movieIdSchema = Joi.object({
   movieId: Joi.string().required(),
 });
 
+const forgotPasswordSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+const resetPasswordSchema = Joi.object({
+  password: Joi.string().min(6).required(),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
@@ -155,6 +176,8 @@ const schemas = {
   emailSchema,
   refreshSchema,
   movieIdSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 };
 
 export { Token, User, IUser, Session, ISession, EmailData, schemas };

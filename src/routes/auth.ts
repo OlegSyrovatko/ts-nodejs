@@ -81,6 +81,27 @@ router.patch(
 );
 
 router.post(
+  "/login",
+  validateBody(schemas.loginSchema),
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.login(req, res, next)
+);
+
+router.post(
+  "/forgot-password",
+  validateBody(schemas.forgotPasswordSchema),
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.forgotPassword(req, res, next)
+);
+
+router.post(
+  "/reset-password/:token",
+  validateBody(schemas.resetPasswordSchema),
+  (req: Request, res: Response, next: NextFunction) =>
+    ctrl.resetPassword(req, res, next)
+);
+
+router.post(
   "/logout",
   authenticate,
   (req: Request, res: Response, next: NextFunction) =>

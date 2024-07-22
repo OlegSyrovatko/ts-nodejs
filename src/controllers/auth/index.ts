@@ -9,6 +9,8 @@ import { updateSubscription } from "./updateSubscription";
 import { updateAvatar } from "./updateAvatar";
 import { deleteAvatar } from "./deleteAvatar";
 import { addMovie, removeMovie } from "./movies";
+import { forgotPassword } from "./forgotPassword";
+import { resetPassword } from "./resetPassword";
 
 export {
   register,
@@ -23,4 +25,6 @@ export {
   updateAvatar,
   deleteAvatar,
   removeMovie,
+  forgotPassword,
+  resetPassword,
 };
