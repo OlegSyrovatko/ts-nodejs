@@ -33,7 +33,7 @@ export const forgotPassword = ctrlWrapper(
       resetPasswordExpires: resetTokenExpiry,
     });
 
-    const resetUrl = `${BASE_URL}/auth/reset-password/${resetToken}`;
+    const resetUrl = `${BASE_URL}/resetpwd/${resetToken}`;
 
     const resetEmail: EmailData = {
       to: email,
