@@ -44,6 +44,6 @@ export const forgotPassword = ctrlWrapper(
 
     await sendEmail(resetEmail);
 
-    res.status(200).json({ message: "Password reset link sent to email" });
+    res.status(200).json({ message: "Password reset link sent to your email" });
   }
 );
