@@ -7,7 +7,7 @@ import ctrlWrapper from "../../helpers/ctrlWrapper";
 const { BASE_URL } = process.env;
 
 if (!BASE_URL) {
-  throw new Error("BASE_URL is not defined in environment variables");
+  throw new Error("BASE_URL is not defined in environment variables!");
 }
 
 export const verifyEmail = ctrlWrapper(
