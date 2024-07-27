@@ -37,7 +37,7 @@ export const register = ctrlWrapper(
     const verifyEmail: EmailData = {
       to: email,
       subject: "Verify email",
-      html: `<a target="_blank" href="${BASE_URL}/auth/verify/${verificationToken}">Click to verify email</a>`,
+      html: `<a target="_blank" href="${BASE_URL}/verifyeml/${verificationToken}">Click to verify email</a>`,
     };
 
     await sendEmail(verifyEmail);
