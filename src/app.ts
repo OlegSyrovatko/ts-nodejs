@@ -23,6 +23,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://olegsyrovatko.github.io",
+  "https://tsmovies.netlify.app",
 ];
 app.use(
   cors({
