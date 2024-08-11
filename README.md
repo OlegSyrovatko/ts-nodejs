@@ -113,6 +113,16 @@ Make sure to configure the environment variables correctly before running the se
   - `DELETE /auth/avatar`
   - Deletes the user avatar
 
+  - **Update Avatar AWS s3**
+
+  - `PATCH /auth/avatar-aws`
+  - Uploads a new avatar image to AWS s3
+
+- **Delete Avatar AWS s3**
+
+  - `DELETE /auth/avatar-aws`
+  - Deletes the user avatar from AWS s3
+
 - **Add Movie to Favorites**
 
   - `PATCH /auth/add-movie`
