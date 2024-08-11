@@ -6,6 +6,8 @@ import { refresh } from "./refresh";
 import { getCurrent } from "./getCurrent";
 import { logout } from "./logout";
 import { updateSubscription } from "./updateSubscription";
+import { updateAvatarAWS } from "./updateAvatarAWS";
+import { deleteAvatarAWS } from "./deleteAvatarAWS";
 import { updateAvatar } from "./updateAvatar";
 import { deleteAvatar } from "./deleteAvatar";
 import { addMovie, removeMovie } from "./movies";
@@ -23,6 +25,8 @@ export {
   updateSubscription,
   addMovie,
   updateAvatar,
+  updateAvatarAWS,
+  deleteAvatarAWS,
   deleteAvatar,
   removeMovie,
   forgotPassword,

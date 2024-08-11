@@ -67,6 +67,15 @@ router.patch(
 router.delete("/avatar", authenticate, ctrl.deleteAvatar);
 
 router.patch(
+  "/avatar-aws",
+  authenticate,
+  upload.single("avatar"),
+  ctrl.updateAvatarAWS
+);
+
+router.delete("/avatar-aws", authenticate, ctrl.deleteAvatarAWS);
+
+router.patch(
   "/add-movie",
   authenticate,
   validateBody(schemas.movieIdSchema),
